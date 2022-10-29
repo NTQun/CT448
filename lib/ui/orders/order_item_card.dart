@@ -11,10 +11,10 @@ class OrderItemCard extends StatefulWidget {
   const OrderItemCard(this.order, {super.key});
 
   @override
-  State<OrderItemCard> createState() => _OrderItemCardState();
+  State<OrderItemCard> createState() => _OderItemCardState();
 }
 
-class _OrderItemCardState extends State<OrderItemCard> {
+class _OderItemCardState extends State<OrderItemCard> {
   var _expanded = false;
 
   @override
@@ -23,47 +23,43 @@ class _OrderItemCardState extends State<OrderItemCard> {
       margin: const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
-          buildOderSummary(),
-          if (_expanded) buildOderDetails()
+          buidOrderSummary(),
+          if (_expanded) buildOrderDetails()
         ],
       ),
     );
   }
 
-  Widget buildOderDetails() {
+  Widget buildOrderDetails() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       height: min(widget.order.productCount * 20.0 + 10, 100),
       child: ListView(
-        children: widget.order.products
-            .map((prod) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      prod.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+          children: widget.order.products
+              .map((prod) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        prod.title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '${prod.quantity} x \$${prod.price}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
+                      Text(
+                        '${prod.quantity}x \$${prod.price}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                  ],
-                ))
-            .toList(),
-      ),
+                    ],
+                  ))
+              .toList()),
     );
   }
 
-  Widget buildOderSummary() {
+  Widget buidOrderSummary() {
     return ListTile(
       title: Text('\$${widget.order.amount}'),
       subtitle: Text(

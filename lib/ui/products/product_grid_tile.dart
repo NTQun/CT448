@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 import '../../models/product.dart';
@@ -20,10 +22,9 @@ class ProductGridTile extends StatelessWidget {
           footer: buildGridFooterBar(context),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (ctx) => ProductDetailScreen(product),
-                ),
+              Navigator.of(context).pushNamed(
+                ProductDetailScreen.routeName,
+                arguments: product.id,
               );
             },
             child: Image.network(
