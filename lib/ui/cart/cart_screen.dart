@@ -4,7 +4,7 @@ import 'cart_manager.dart';
 import 'cart_item_card.dart';
 
 import 'package:provider/provider.dart';
-import '../orders/orders_manager.dart';
+import '../orders/order_manager.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
