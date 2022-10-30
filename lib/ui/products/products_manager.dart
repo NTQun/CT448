@@ -22,7 +22,7 @@ class ProductsManager with ChangeNotifier {
     //   price: 59.99,
     //   imageUrl:
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-    //   isFavorite: true,
+    //   isFavorite: false,
     // ),
     // Product(
     //   id: 'p3',
@@ -82,6 +82,7 @@ class ProductsManager with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
+ 
 
   Future<void> updateProduct(Product product) async {
     final index = _items.indexWhere((item) => item.id == product.id);
@@ -93,9 +94,12 @@ class ProductsManager with ChangeNotifier {
     }
   }
 
-  void toggleFavoriteStatus(Product product) {
+  Future<void> toggleFavoriteStatus(Product product) async {
     final savedStatus = product.isFavorite;
     product.isFavorite = !savedStatus;
+    if (!await _productsService.saveFavoriteStatus(product)) {
+      product.isFavorite = savedStatus;
+    }
   }
 
   Future<void> deleteProduct(String id) async {
