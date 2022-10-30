@@ -22,7 +22,7 @@ class ProductsManager with ChangeNotifier {
     //   price: 59.99,
     //   imageUrl:
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-    //   isFavorite: false,
+    //   isFavorite: true,
     // ),
     // Product(
     //   id: 'p3',
@@ -82,18 +82,14 @@ class ProductsManager with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  // void addProduct(Product product) {
-  //   _items.add(
-  //     product.coppyWith(id: 'p${DateTime.now().toIso8601String()}'),
-  //   );
-  //   notifyListeners();
-  // }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     final index = _items.indexWhere((item) => item.id == product.id);
     if (index >= 0) {
-      _items[index] = product;
-      notifyListeners();
+      if (await _productsService.updateProduct(product)) {
+        _items[index] = product;
+        notifyListeners();
+      }
     }
   }
 
@@ -102,9 +98,15 @@ class ProductsManager with ChangeNotifier {
     product.isFavorite = !savedStatus;
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     final index = _items.indexWhere((item) => item.id == id);
+    Product? existingProduct = _items[index];
     _items.removeAt(index);
     notifyListeners();
+
+    if (!await _productsService.deleteProduct(id)) {
+      _items.insert(index, existingProduct);
+      notifyListeners();
+    }
   }
 }
